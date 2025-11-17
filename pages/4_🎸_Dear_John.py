@@ -170,7 +170,7 @@ def get_new_response(dear_john_lyrics):
     try:
         response = client.models.generate_content(
                 model="gemini-2.5-flash",
-                contents="Rewrite the song 'Dear John' by Taylor Swift about a different John who struggles to embrace new technology such as AI. John is also a climber (but only does sport or top rope climbing, no bouldering), he loves biking around the NYC, he thinks yohyoh's cat (micha) is ugly, he thinks the cats fig and finn might be better, and John lives in Brooklyn. Only respond with the lyrics. You do not need to indicate the sections of the song. Be experimental with the lyrics. Here are the original lyrics to Dear John: " + dear_john_lyrics,
+                contents=st.secrets['prompt']['dear_john_prompt'] + dear_john_lyrics,
             ).text
         return response
     except:
