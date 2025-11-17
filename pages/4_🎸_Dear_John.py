@@ -194,5 +194,5 @@ while True:
         if i < len(words2):
             text2 += words2[i] + " "
             placeholder2.markdown(text2)
-        time.sleep(0.04)
+        time.sleep(0.09)
     
