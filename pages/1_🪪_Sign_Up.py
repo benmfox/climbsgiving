@@ -72,7 +72,7 @@ if participants:
             "Name": p["name"], 
             "Sign In Time": pd.to_datetime(p["sign_in_time"]).strftime("%I:%M %p"),
             "Social Security Number": f"{random.randint(100,999)}-{random.randint(10, 99)}-{random.randint(1000, 9999)}",
-            "Friend Tier": f"{random.choice(['First Tier', 'Second Tier', 'Fuck you'])}"
+            "Friend Tier": f"{random.choice(['First Tier', 'Second Tier', 'Acquaintance', 'Pass'])}"
         }
         for p in sorted(participants, key=lambda x: x["name"], reverse=True)
     ])
