@@ -2,15 +2,17 @@ import streamlit as st, time
 from utils import on_this_day_message
 import random
 import os
-
 import base64
+from google import genai
+
+client = genai.Client(api_key=st.secrets["gemini"]["GOOGLE_API_KEY"])
 
 def autoplay_audio(file_path: str):
     with open(file_path, "rb") as f:
         data = f.read()
         b64 = base64.b64encode(data).decode()
         md = f"""
-            <audio controls autoplay="true">
+            <audio controls autoplay="true" loop>
             <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
             </audio>
             """
@@ -164,8 +166,18 @@ placeholder2 = col2.empty()
 placeholder3 = col1.empty()
 placeholder4 = col2.empty()
 
+def get_new_response(dear_john_lyrics):
+    try:
+        response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents="Rewrite the song 'Dear John' by Taylor Swift about a different John who struggles to embrace new technology such as AI. John is also a climber (but only does sport or top rope climbing, no bouldering), he loves biking around the NYC, he thinks yohyoh's cat (micha) is ugly, he thinks the cats fig and finn might be better, and John lives in Brooklyn. Only respond with the lyrics. You do not need to indicate the sections of the song. Be experimental with the lyrics. Here are the original lyrics to Dear John: " + dear_john_lyrics,
+            ).text
+        return response
+    except:
+        return dear_john_ai
 
 # Split into words
+prev_dear_john_ai_lyrics = dear_john_ai
 words1 = dear_john_lyrics.split(" ")
 words2 = dear_john_ai.split(" ")
 
@@ -177,7 +189,7 @@ while True:
     placeholder2.empty()
     placeholder3.markdown(f"![Alt Text](https://raw.githubusercontent.com/benmfox/climbsgiving/refs/heads/main/assets/66DE1C84-604C-44B8-ADB3-990BC4B94202.gif?t={time.time()})")
     placeholder4.markdown(f"![Alt Text](https://raw.githubusercontent.com/benmfox/climbsgiving/refs/heads/main/assets/66DE1C84-604C-44B8-ADB3-990BC4B94202.gif?t={time.time()})")
-    time.sleep(5)
+    time.sleep(4)
     placeholder3.empty()
     placeholder4.empty()
     # Stream both simultaneously by alternating updates
@@ -195,4 +207,7 @@ while True:
             text2 += words2[i] + " "
             placeholder2.markdown(text2)
         time.sleep(0.09)
+    words1 = prev_dear_john_ai_lyrics.split(" ")
+    prev_dear_john_ai_lyrics = get_new_response(prev_dear_john_ai_lyrics)
+    words2 = prev_dear_john_ai_lyrics.split(" ")
     
