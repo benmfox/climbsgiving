@@ -84,8 +84,8 @@ all_locations = climbing_locations + food_locations
 st.markdown("""
 ### Proposed Locations
 """)
-m = folium.Map(location=[40.7589, -73.9851], zoom_start=12)
 
+m = folium.Map(location=[40.760475, -73.900183], zoom_start=12)
 # Add climbing locations with times
 for loc in climbing_locations:
     popup_html = f"<b>{loc['name']}</b><br>{loc['address']}<br><b>⏰ Arrival: {loc['time']}</b>"
