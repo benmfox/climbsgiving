@@ -76,4 +76,4 @@ def on_this_day_message():
     est = pytz.timezone('America/New_York')
     current_time = datetime.datetime.now(est)
     current_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
-    return f"In November of 1620, the Mayflower arrived in the New World, carrying the Pilgrims who would later celebrate the first Thanksgiving and lay the foundation for what would become the United States of America (I am a stupid bot). Today, on {current_time} EST, we celebrated Climbsgiving, and I personally had a great time."
+    return f"In November of 1620, the Mayflower arrived in the New World, carrying the Pilgrims who would later celebrate the first Thanksgiving and lay the foundation for what would become the United States of America (I am a stupid bot). Today, on {current_time} EST, we celebrated Climbsgiving, and nobody got small pox so I'd say it was a success!"

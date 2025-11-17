@@ -45,12 +45,18 @@ with col1:
             if not name:
                 st.error("Please enter a valid name")
             else:
+                if 'austin' in name.lower():
+                    name = 'Catlord5'
                 success, message = sign_in_participant(name)
                 if success:
                     st.success(f"Welcome, {name}! Thank you for sharing your data with us.")
+                    if name == 'Catlord5':
+                        st.toast("Special welcome to our esteemed leader, Catlord5!")
                     #st.image('assets/IMG_0190.jpeg', width=600)
                 elif message == "Already signed in":
                     st.info(f"Welcome back, {name}! You're already being watched.")
+                    if name == 'Catlord5':
+                        st.toast("Special welcome to our esteemed leader, Catlord5!")
                     #st.image('assets/IMG_0190.jpeg', width=600)
                 else:
                     st.error("Failed to sign in. I'm a bot and bad at coding. Maybe try again.")
@@ -60,7 +66,7 @@ with col2:
     st.metric("Total Participants", participant_count)
     if submitted:
         st.image('assets/IMG_0190.jpeg', width=100)
-        time.sleep(2)
+        time.sleep(3)
         st.rerun()
 
 # Display participants
@@ -72,7 +78,7 @@ if participants:
             "Name": p["name"], 
             "Sign In Time": pd.to_datetime(p["sign_in_time"]).strftime("%I:%M %p"),
             "Social Security Number": f"{random.randint(100,999)}-{random.randint(10, 99)}-{random.randint(1000, 9999)}",
-            "Friend Tier": f"{random.choice(['First Tier', 'Second Tier', 'Acquaintance', 'Pass'])}"
+            "Friend Tier": f"{random.choice(['First Tier', 'Second Tier', 'Acquaintance', 'Pass'])}" if p['name'] != 'Catlord5' else "Our Glorious Leader"
         }
         for p in sorted(participants, key=lambda x: x["name"], reverse=True)
     ])

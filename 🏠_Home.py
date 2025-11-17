@@ -36,7 +36,7 @@ st.title("🦃 Climbsgiving 2025")
 st.markdown("> Funding provided by Curtis Sliwa and the Guardian Angels")
 col_date, col_time = st.columns([2, 1])
 with col_date:
-    st.markdown("**9:00 AM | November 22, 2025 | New York City, NY**")
+    st.markdown("**9:00 AM @ Dear Mama (or 9:30 AM @ West Harlem Vital) | November 22, 2025 | New York City, NY**")
 with col_time:
     st.markdown(f"**🕐 Current Time: {current_time.strftime('%I:%M %p EST')}**")
 
