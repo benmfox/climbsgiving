@@ -197,7 +197,7 @@ while True:
     for i in range(max_length):
         if i == 0:
             text1 += "### Dear John\n"
-            text2 += "### Dear John, sincerely chatgpt\n"
+            text2 += "### ⬅️ Dear John, sincerely chatgpt\n"
             placeholder1.markdown(text1)
             placeholder2.markdown(text2)
         if i < len(words1):
