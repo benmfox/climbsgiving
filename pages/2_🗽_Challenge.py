@@ -9,7 +9,6 @@ from utils import (
     init_session_state,
     get_participant_names,
     get_all_participants,
-    save_challenge_progress,
     log_climb_completion,
     get_completions_for_location,
     on_this_day_message

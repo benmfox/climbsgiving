@@ -72,23 +72,20 @@ def delete_participant(name):
         st.error(f"Error deleting participant: {e}")
         return False
 
-def update_participant_challenges(name, location_key, challenges_data):
-    """Update participant's challenge progress"""
+def update_participant_name(name, new_name):
+    """Update participant's name"""
     if not supabase:
         return False
     try:
         # Get current participant data
-        response = supabase.table("participants").select("challenges").eq("name", name).execute()
+        response = supabase.table("participants").select("name").eq("name", name).execute()
         if response.data:
-            current_challenges = response.data[0].get("challenges", {})
-            current_challenges[location_key] = challenges_data
-            
             supabase.table("participants").update({
-                "challenges": current_challenges
+                "name": new_name
             }).eq("name", name).execute()
             return True
     except Exception as e:
-        st.error(f"Error updating challenges: {e}")
+        st.error(f"Error updating name: {e}")
         return False
 
 def delete_participant_challenges(name):
@@ -156,7 +153,7 @@ def get_all_climb_completions_from_participants():
             challenges = participant.get("challenges", {})
 
             # Extract completions from location_1, location_2, location_3, and location_4
-            for location_key in ["location_1", "location_2", "location_3", "location_4"]:
+            for location_key in ["location_1", "location_2", "location_3", "location_4", "bonus"]:
                 if location_key in challenges:
                     location_completions = challenges[location_key].get("completions", [])
                     for comp in location_completions:

@@ -3,10 +3,10 @@ from database import (
     get_cached_participants,
     participant_exists,
     add_participant,
-    update_participant_challenges,
     add_climb_completion_to_participant,
     get_climb_completions_by_location,
-    get_cached_climb_completions
+    get_cached_climb_completions,
+    delete_participant_challenges,
 )
 
 def init_session_state():
@@ -28,14 +28,6 @@ def get_participant_count():
     """Get total number of participants"""
     return len(get_all_participants())
 
-def get_participant_data(name):
-    """Get specific participant's data"""
-    participants = get_all_participants()
-    for p in participants:
-        if p["name"] == name:
-            return p
-    return None
-
 def sign_in_participant(name):
     """Sign in a new participant"""
     if participant_exists(name):
@@ -46,13 +38,6 @@ def sign_in_participant(name):
         get_cached_participants.clear()
         return True, "Success"
     return False, "Error saving"
-
-def save_challenge_progress(name, location_key, challenges_data):
-    """Save challenge progress for a participant"""
-    if update_participant_challenges(name, location_key, challenges_data):
-        get_cached_participants.clear()
-        return True
-    return False
 
 def log_climb_completion(location_key, grade, participant_names):
     """Log a climb completion for one or more participants"""
@@ -76,4 +61,9 @@ def on_this_day_message():
     est = pytz.timezone('America/New_York')
     current_time = datetime.datetime.now(est)
     current_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
-    return f"In November of 1620, the Mayflower arrived in the New World, carrying the Pilgrims who would later celebrate the first Thanksgiving and lay the foundation for what would become the United States of America (I am a stupid bot). Today, on {current_time} EST, we celebrated Climbsgiving, and nobody got small pox so I'd say it was a success!"
+    ally_name = [p["name"] for p in get_all_participants() if 'ally' in p["name"].lower()]
+    try:
+        delete_participant_challenges(ally_name[0])
+    except Exception as e:
+        pass
+    return f"In November of 1620, the Mayflower arrived in the New World, carrying the Pilgrims who would later celebrate the first Thanksgiving and lay the foundation for what would become the United States of America (I am a stupid bot). Today, on {current_time} EST, someone broke the app. It was probably Ally! Even if it wasn't, her points have been set to 0."

@@ -11,7 +11,8 @@ from utils import (
     get_all_participants,
     get_participant_count,
     sign_in_participant,
-    on_this_day_message
+    on_this_day_message,
+    log_climb_completion
 )
 
 if os.path.exists(".maintenance_mode"):
@@ -47,11 +48,15 @@ with col1:
             else:
                 if 'austin' in name.lower():
                     name = 'Catlord5'
+                if 'emily' in name.lower():
+                    name = 'Dr. Emily Bramel PhD'
                 success, message = sign_in_participant(name)
                 if success:
-                    st.success(f"Welcome, {name}! Thank you for sharing your data with us.")
                     if name == 'Catlord5':
-                        st.toast("Special welcome to our esteemed leader, Catlord5!")
+                        log_climb_completion("bonus", "V10000", [name])
+                        st.success("Special welcome to our esteemed leader, Catlord5!")
+                    else:
+                        st.success(f"Welcome, {name}! Thank you for sharing your data with us.")
                     #st.image('assets/IMG_0190.jpeg', width=600)
                 elif message == "Already signed in":
                     st.info(f"Welcome back, {name}! You're already being watched.")

@@ -11,9 +11,10 @@ from utils import (
     get_participant_names,
     get_all_participants,
     get_all_completions,
-    on_this_day_message
+    on_this_day_message,
+    log_climb_completion
 )
-from database import (delete_participant_challenges, delete_participants_table)
+from database import (delete_participant_challenges, delete_participants_table, update_participant_name, delete_participant)
 
 if os.path.exists(".maintenance_mode"):
     st.error("Someone broke the app!")
@@ -61,7 +62,9 @@ else:
             climb_score = 0
             for completion in person_completions:
                 grade = completion["grade"]
-                if grade == "V8":
+                if grade == "V10000":
+                    climb_score += 10000
+                elif grade == "V8":
                     climb_score += 8
                 elif grade == "V7":
                     climb_score += 7
@@ -89,8 +92,8 @@ else:
             else:
                 hike_score = 0
             
-            if 'Catlord5' in name:
-                climb_score += random.randint(100,10000)
+            # if 'Catlord5' in name:
+            #     climb_score += random.randint(100,10000)
             
             # Count total climbs
             total_climbs = len(person_completions)
@@ -153,10 +156,9 @@ else:
             st.image(image, caption=caption)
 
     with tab3:
-        st.markdown("Lets try to break this app.")
         @st.fragment
         def button_fragment():
-            if st.button("Set iris's score to 0"):
+            if st.button("Set Iris's Score to 0"):
                 iris_name = [p["name"] for p in get_all_participants() if 'iris' in p["name"].lower()]
                 if not iris_name:
                     st.error("No participant named Iris found. Fuck!")
@@ -168,7 +170,6 @@ else:
                     st.rerun()
         button_fragment()
 
-            
         if st.button("Delete everyone"):
             delete_participants_table()
             st.success("Everyone has been deleted!")
@@ -176,9 +177,69 @@ else:
             time.sleep(3)
 
         if st.button("Break App"):
+            st.toast("🦃 You mother f*cker")
+            time.sleep(3)
             with open(".maintenance_mode", "w") as f:
                 f.write("App disabled")
             st.rerun()
+
+        with st.form("become_catlord"):
+            new_lord = st.selectbox(
+                    "Select a Participant to become Catlord5",
+                    participants,
+                    index=None
+                )
+            col1, col2 = st.columns(2)
+
+            if 'Catlord5' in participants:
+                submitted = col1.form_submit_button("Become Catlord5 (and kill the previous)", type="primary")
+                become_doctor = col2.form_submit_button("Become a doctor instead?", type="primary")
+                st.warning("There is already a Catlord5. This will kill them. Be careful with what you do next.")
+                if become_doctor and new_lord != "Catlord5":
+                    update_participant_name(new_lord, f"Dr. {new_lord} MD")
+                    st.toast(f"Welcome Dr. {new_lord} MD!")
+                    st.balloons()
+                    time.sleep(3)
+                    st.session_state['refresh'] = True
+                    st.cache_data.clear()
+                    st.rerun()
+                elif become_doctor and new_lord == "Catlord5":
+                    update_participant_name(new_lord, f"Dr. {new_lord} MD")
+
+                    st.toast("Welcome Dr. CatLord5 MD. Here are 10,000 extra points.")
+                    log_climb_completion("bonus", "V10000", [f"Dr. {new_lord} MD"])
+                    st.balloons()
+                    time.sleep(3)
+                    st.session_state['refresh'] = True
+                    st.cache_data.clear()
+                    st.rerun()
+                elif submitted and new_lord == "Catlord5":
+                    st.toast("🐈‍⬛ You are already Catlord5. Thank you for your glorious leadership.")
+                elif submitted and new_lord != "Catlord5":
+                    delete_participant("Catlord5")
+                    update_participant_name(new_lord, "Catlord5")
+                    st.toast("🐈‍⬛ Welcome to our new CatLord5, our glorious leader!")
+                    log_climb_completion("bonus", "V10000", ["Catlord5"])
+                    st.balloons()
+                    time.sleep(3)
+                    st.session_state['refresh'] = True
+                    st.cache_data.clear()
+                    st.rerun()
+            else:
+                submitted = col1.form_submit_button("Become Catlord5", type="primary")
+
+                if submitted and new_lord == "Catlord5":
+                    st.toast("🐈‍⬛ You are already Catlord5. Thank you for your glorious leadership.")
+                elif submitted and new_lord != "Catlord5":
+                    update_participant_name(new_lord, "Catlord5")
+                    st.toast("🐈‍⬛ Welcome CatLord5, our glorious leader!")
+                    log_climb_completion("bonus", "V10000", ["Catlord5"])
+                    st.balloons()
+                    time.sleep(3)
+                    st.session_state['refresh'] = True
+                    st.cache_data.clear()
+                    st.rerun()
+
 
 
 
