@@ -84,7 +84,7 @@ if participants:
             "Name": p["name"], 
             "Sign In Time": pd.to_datetime(p["sign_in_time"]).strftime("%I:%M %p"),
             "Social Security Number": f"{random.randint(100,999)}-{random.randint(10, 99)}-{random.randint(1000, 9999)}",
-            "Friend Tier": "First Tier" if p['name'].lower() in ["iris,"ben","benson","abby"] else "Our Glorious Leader" if p["name"] = "Catlord5" else "Dead to me"  
+            "Friend Tier": "First Tier" if p['name'].lower() in ["iris,"ben","benson","abby","Catlord5"] else "Dead to me"  
         }
         for p in sorted(participants, key=lambda x: x["name"], reverse=True)
     ])
