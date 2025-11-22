@@ -180,7 +180,7 @@ else:
                     recent_data.append({
                         "Grade": comp["grade"],
                         "Participant": comp["participant_name"],
-                        "Time": pd.to_datetime(comp["completed_at"]).strftime("%Y-%m-%d %H:%M:%S")
+                        "Time": pd.to_datetime(comp["completed_at"]).strftime("%Y-%m-%d %H:%M")
                     })
                 recent_dataframe = pd.DataFrame(recent_data)
                 recent_dataframe = recent_dataframe.groupby('Time').agg({'Grade': 'first', 'Participant': ', '.join}).reset_index()
