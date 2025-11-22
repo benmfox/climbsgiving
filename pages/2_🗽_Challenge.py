@@ -173,7 +173,7 @@ else:
             if all_completions:
                 st.divider()
                 st.markdown("#### Recent Completions")
-                recent = sorted(all_completions, key=lambda x: x["completed_at"], reverse=True)[:10]
+                recent = sorted(all_completions, key=lambda x: x["completed_at"], reverse=True)
                 
                 recent_data = []
                 for comp in recent:
